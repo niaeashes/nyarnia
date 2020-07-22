@@ -1,0 +1,10 @@
+{
+  "name": "nyarnia-api-schema",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "redoc": "^2.0.0-rc.33",
+    "redoc-cli": "^0.9.8"
+  }
+}

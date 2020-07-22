@@ -1,0 +1,8 @@
+type: object
+properties:
+  recorded-at:
+    type: string
+    format: date-time
+  operation:
+    type: string
+    enum: [open, update, close, reopen]

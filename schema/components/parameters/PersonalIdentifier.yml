@@ -1,0 +1,5 @@
+in: path
+name: pid
+schema:
+  type: string
+  format: uuid

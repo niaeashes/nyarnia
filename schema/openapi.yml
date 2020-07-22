@@ -1,0 +1,115 @@
+---
+openapi: 3.0.2
+info:
+  title: Nyarnia API
+paths:
+  "/accounts":
+    post:
+      summary: Register New Account
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  account:
+                    "$ref": "#/components/schemas/Account"
+  "/accounts/{pid}":
+    get:
+      summary: Get Account
+      parameters:
+      - "$ref": "#/components/parameters/PersonalIdentifier"
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  account:
+                    "$ref": "#/components/schemas/Account"
+  "/accounts/{pid}/records":
+    get:
+      summary: Get Account Records
+      parameters:
+      - "$ref": "#/components/parameters/PersonalIdentifier"
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  account:
+                    "$ref": "#/components/schemas/Account"
+                  records:
+                    "$ref": "#/components/schemas/AccountRecord"
+                required:
+                - records
+  "/accounts/{pid}/records/{operation}":
+    post:
+      summary: Create Account Record
+      parameters:
+      - "$ref": "#/components/parameters/PersonalIdentifier"
+      - in: path
+        name: operation
+        schema:
+          type: string
+          enum:
+          - update
+          - close
+          - reopen
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  record:
+                    "$ref": "#/components/schemas/AccountRecord"
+                required:
+                - record
+components:
+  schemas:
+    AccountRecord:
+      type: object
+      properties:
+        recorded-at:
+          type: string
+          format: date-time
+    Account:
+      type: object
+      properties:
+        name:
+          type: string
+        birthday:
+          type: string
+          format: date
+        personal-identifier:
+          type: string
+          format: uuid
+        registered-at:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum:
+          - active
+          - in-review
+          - closed
+          - stopped
+      required:
+      - name
+      - birthday
+      - personal-identifier
+      - registered-at
+      - status
+  parameters:
+    PersonalIdentifier:
+      in: path
+      name: pid
+      schema:
+        type: string
+        format: uuid

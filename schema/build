@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+
+require 'yaml'
+
+SRC = '.'
+
+openapi = YAML.load File.open "#{SRC}/root.yml"
+
+paths = {}
+
+Dir.each_child("#{SRC}/paths") do |file|
+  next if File.extname(file) != '.yml'
+  path = YAML.load File.open "#{SRC}/paths/#{file}"
+  paths.merge! path
+end
+
+openapi['paths'] = Hash[paths.sort_by { |k, v| k }]
+
+components = {}
+
+Dir.each_child("#{SRC}/components") do |sub|
+  next unless File.directory? "#{SRC}/components/#{sub}"
+  components[sub] = {}
+  Dir.each_child("#{SRC}/components/#{sub}") do |file|
+    next if File.extname(file) != '.yml'
+    name = File.basename(file, File.extname(file))
+    components[sub][name] = YAML.load File.open "#{SRC}/components/#{sub}/#{file}"
+  end
+end
+
+openapi['components'] = components
+
+$stdout.print YAML.dump(openapi)

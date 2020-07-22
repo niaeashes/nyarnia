@@ -1,0 +1,17 @@
+type: object
+properties:
+  name:
+    type: string
+  birthday:
+    type: string
+    format: date
+  personal-identifier:
+    type: string
+    format: uuid
+  registered-at:
+    type: string
+    format: date-time
+  status:
+    type: string
+    enum: [active, in-review, closed, stopped]
+required: [name, birthday, personal-identifier, registered-at, status]
