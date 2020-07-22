@@ -1,0 +1,14 @@
+#!/usr/bin/env ruby
+
+create_table 'accounts', force: :cascade, id: :binary, limit: 16, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci" do |t|
+  t.string   'name',          limit: 128, null: false
+  t.datetime 'registered_at',             null: false
+end
+
+create_table 'account_records', force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci" do |t|
+  t.binary   'account_id',    limit: 16,  null: false
+  t.datetime 'recorded_at',               null: false
+  t.index ['account_id'], name: 'account_records_on_account_id', using: :btree
+end
+
+add_foreign_key 'account_records', 'accounts', name: 'account_records_ibfk_accounts'
